@@ -11,7 +11,7 @@
         <!--Location View Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="LocationViewController" customModule="RestaurantApp" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="LocationViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="BYZ-38-t0r" customClass="LocationViewController" customModule="RestaurantApp" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC" customClass="LocationView" customModule="RestaurantApp" customModuleProvider="target">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -99,6 +99,9 @@
                             <outlet property="denyButton" destination="gqg-kU-XOc" id="OqX-5d-HgY"/>
                         </connections>
                     </view>
+                    <connections>
+                        <outlet property="locationView" destination="8bC-Xf-vdC" id="jmf-WB-ZAI"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
@@ -107,7 +110,7 @@
         <!--Restaurants-->
         <scene sceneID="bmN-bT-KfC">
             <objects>
-                <tableViewController id="RgQ-t2-t25" customClass="RestaurantTableViewController" customModule="RestaurantApp" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="RestaurantTableViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="RgQ-t2-t25" customClass="RestaurantTableViewController" customModule="RestaurantApp" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="a1t-Eh-RoW">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -200,7 +203,7 @@
         <!--Details Food View Controller-->
         <scene sceneID="Jp7-iu-3gU">
             <objects>
-                <viewController id="PG4-a6-aGt" customClass="DetailsFoodViewController" customModule="RestaurantApp" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="DetailsFoodViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="PG4-a6-aGt" customClass="DetailsFoodViewController" customModule="RestaurantApp" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="FZ3-U3-u0L" customClass="DetailsFoodView" customModule="RestaurantApp" customModuleProvider="target">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="1024"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>

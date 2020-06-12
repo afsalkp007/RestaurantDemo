@@ -12,9 +12,30 @@ import UIKit
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
-
+    let locationService = LocationService()
+    let storyboard = UIStoryboard(name: "Main", bundle: nil)
+    
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-      
+    
+        window = UIWindow()
+        
+        
+        switch locationService.status {
+        case .notDetermined, .denied, .restricted:
+            
+            
+            let locationVC = storyboard.instantiateViewController(withIdentifier: "LocationViewController") as? LocationViewController
+            locationVC?.locationService = locationService
+            window?.rootViewController = locationVC
+            
+            
+        default:
+            let locationVC = storyboard.instantiateViewController(withIdentifier: "LocationViewController") as? LocationViewController
+            locationVC?.locationService = locationService
+            window?.rootViewController = locationVC
+        }
+        window?.makeKeyAndVisible()
+        
         return true
     }
 
