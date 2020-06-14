@@ -1,0 +1,10 @@
+platform :ios, '13.5'
+
+target 'RestaurantApp' do
+  use_frameworks!
+
+  # Pods for RestaurantApp
+	pod 'AlamofireImage'
+	pod 'Moya'
+	pod 'Result'
+end
