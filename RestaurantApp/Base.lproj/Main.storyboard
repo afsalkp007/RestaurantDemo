@@ -116,7 +116,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="RestaurantCell" rowHeight="236" id="VOX-GJ-MU0" customClass="RestarantTableViewCell" customModule="RestaurantApp" customModuleProvider="target">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="RestarantTableViewCell" rowHeight="236" id="VOX-GJ-MU0" customClass="RestarantTableViewCell" customModule="RestaurantApp" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="28" width="375" height="236"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="VOX-GJ-MU0" id="8uf-Dr-F4Q">
@@ -184,10 +184,10 @@
                                     </constraints>
                                 </tableViewCellContentView>
                                 <connections>
-                                    <outlet property="locationLabel" destination="HtH-sb-6UE" id="Fnz-al-fu1"/>
-                                    <outlet property="makerImageView" destination="mpk-7E-NGw" id="sHG-Iv-uiE"/>
-                                    <outlet property="restaurantImageView" destination="reY-WF-m2X" id="zKo-w7-gmC"/>
-                                    <outlet property="restaurantNameLabel" destination="hT8-nV-cU8" id="5Qh-VR-YKY"/>
+                                    <outlet property="locationLabel" destination="HtH-sb-6UE" id="Rz3-Z0-sob"/>
+                                    <outlet property="makerImageView" destination="mpk-7E-NGw" id="tIx-8V-Wyc"/>
+                                    <outlet property="restaurantImageView" destination="reY-WF-m2X" id="auc-Xc-eti"/>
+                                    <outlet property="restaurantNameLabel" destination="hT8-nV-cU8" id="9Pm-al-B6P"/>
                                     <segue destination="PG4-a6-aGt" kind="show" id="5mz-PC-J2Y"/>
                                 </connections>
                             </tableViewCell>
@@ -462,7 +462,7 @@
         <!--Navigation Controller-->
         <scene sceneID="6zu-xt-shB">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="Q02-Uh-Vmx" sceneMemberID="viewController">
+                <navigationController storyboardIdentifier="RestaurantNavigationController" automaticallyAdjustsScrollViewInsets="NO" id="Q02-Uh-Vmx" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" largeTitles="YES" id="N2e-o1-CqM">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="96"/>

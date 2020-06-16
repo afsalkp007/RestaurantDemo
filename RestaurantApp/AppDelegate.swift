@@ -23,18 +23,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window = UIWindow()
         
         jsonDecoder.keyDecodingStrategy = .convertFromSnakeCase
-        service.request(.search(lat: 42.361145, long: -71.057083 )) { (result) in
-            
-            switch result {
-            case .success(let response):
-                
-                let root = try? self.jsonDecoder.decode(Root.self, from: response.data)
-                print(root)
-                
-            case .failure(let error):
-                print("Error: \(error)")
-            }
-        }
         
         switch locationService.status {
         case .notDetermined, .denied, .restricted:
@@ -46,15 +34,33 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             
             
         default:
-            let locationVC = storyboard.instantiateViewController(withIdentifier: "LocationViewController") as? LocationViewController
-            locationVC?.locationService = locationService
-            window?.rootViewController = locationVC
+            let nav = storyboard.instantiateViewController(identifier: "RestaurantNavigationController") as? UINavigationController
+            window?.rootViewController = nav
+            loadBusiness()
+            
         }
         window?.makeKeyAndVisible()
         
         return true
     }
 
-
+    private func loadBusiness() {
+        service.request(.search(lat: 42.361145, long: -71.057083 )) { (result) in
+               
+               switch result {
+               case .success(let response):
+                   
+                   let root = try? self.jsonDecoder.decode(Root.self, from: response.data)
+                   let viewModels = root?.businesses.compactMap(RestaurantListViewModel.init)
+                
+                   if let nav = self.window?.rootViewController as? UINavigationController, let restaurantListViewController = nav.topViewController as? RestaurantTableViewController {
+                    restaurantListViewController.viewModels = viewModels ?? []
+                }
+                
+               case .failure(let error):
+                   print("Error: \(error)")
+               }
+           }
+    }
 }
 
