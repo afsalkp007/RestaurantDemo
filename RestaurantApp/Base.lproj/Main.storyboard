@@ -111,7 +111,7 @@
         <scene sceneID="bmN-bT-KfC">
             <objects>
                 <tableViewController storyboardIdentifier="RestaurantTableViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="RgQ-t2-t25" customClass="RestaurantTableViewController" customModule="RestaurantApp" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="a1t-Eh-RoW">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="a1t-Eh-RoW">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
@@ -129,8 +129,11 @@
                                                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="K1G-vY-ntW">
                                                     <rect key="frame" x="0.0" y="0.0" width="343" height="214"/>
                                                     <subviews>
-                                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="100" translatesAutoresizingMaskIntoConstraints="NO" id="reY-WF-m2X">
+                                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="100" image="placeholder" translatesAutoresizingMaskIntoConstraints="NO" id="reY-WF-m2X">
                                                             <rect key="frame" x="0.0" y="0.0" width="343" height="174"/>
+                                                            <constraints>
+                                                                <constraint firstAttribute="height" constant="174" id="PIC-tq-l5X"/>
+                                                            </constraints>
                                                         </imageView>
                                                         <stackView opaque="NO" contentMode="scaleToFill" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="zWy-hG-vrD">
                                                             <rect key="frame" x="0.0" y="190" width="343" height="24"/>
@@ -144,19 +147,19 @@
                                                                 <stackView opaque="NO" contentMode="scaleToFill" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="xAI-Q8-HtQ">
                                                                     <rect key="frame" x="277" y="0.0" width="66" height="24"/>
                                                                     <subviews>
-                                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0.1" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HtH-sb-6UE">
-                                                                            <rect key="frame" x="0.0" y="0.0" width="26" height="24"/>
-                                                                            <fontDescription key="fontDescription" name="AvenirNext-Regular" family="Avenir Next" pointSize="18"/>
-                                                                            <nil key="textColor"/>
-                                                                            <nil key="highlightedColor"/>
-                                                                        </label>
-                                                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="mpk-7E-NGw">
-                                                                            <rect key="frame" x="42" y="0.0" width="24" height="24"/>
+                                                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="marker" translatesAutoresizingMaskIntoConstraints="NO" id="mpk-7E-NGw">
+                                                                            <rect key="frame" x="0.0" y="0.0" width="24" height="24"/>
                                                                             <constraints>
                                                                                 <constraint firstAttribute="width" constant="24" id="APS-Nz-Qjj"/>
                                                                                 <constraint firstAttribute="height" constant="24" id="EcL-W0-Fbl"/>
                                                                             </constraints>
                                                                         </imageView>
+                                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0.1" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HtH-sb-6UE">
+                                                                            <rect key="frame" x="40" y="0.0" width="26" height="24"/>
+                                                                            <fontDescription key="fontDescription" name="AvenirNext-Regular" family="Avenir Next" pointSize="18"/>
+                                                                            <nil key="textColor"/>
+                                                                            <nil key="highlightedColor"/>
+                                                                        </label>
                                                                     </subviews>
                                                                 </stackView>
                                                             </subviews>
@@ -485,5 +488,7 @@
         <image name="IC Star 24px" width="20" height="19"/>
         <image name="IC Store 24px" width="18" height="15"/>
         <image name="location-permission" width="1073" height="968"/>
+        <image name="marker" width="24" height="24"/>
+        <image name="placeholder" width="343" height="153"/>
     </resources>
 </document>

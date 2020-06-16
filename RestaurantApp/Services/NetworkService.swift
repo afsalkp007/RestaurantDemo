@@ -16,7 +16,7 @@ enum YelpService {
     enum BusinessProvider: TargetType {
          case search(lat: Double, long: Double)
         var baseURL: URL {
-            return URL(string: "https://api.yelp.com/v3/business")!
+            return URL(string: "https://api.yelp.com/v3/businesses")!
         }
         
         var path: String {
@@ -42,7 +42,7 @@ enum YelpService {
         }
         
         var headers: [String : String]? {
-            return ["Authorization": "Beerer \(apiKey)"]
+            return ["Authorization": "Bearer \(apiKey)"]
         }
         
        
