@@ -13,7 +13,6 @@ import AlamofireImage
 class RestarantTableViewCell: UITableViewCell {
     
     
-    
     @IBOutlet weak var restaurantImageView: UIImageView!
     @IBOutlet weak var makerImageView: UIImageView!
     @IBOutlet weak var restaurantNameLabel: UILabel!
@@ -25,7 +24,7 @@ class RestarantTableViewCell: UITableViewCell {
         
         restaurantImageView.af.setImage(withURL: viewModel.imageUrl)
         restaurantNameLabel.text = viewModel.name
-        locationLabel.text = viewModel.distance
+        locationLabel.text = viewModel.formattedDistance
         
     }
 
