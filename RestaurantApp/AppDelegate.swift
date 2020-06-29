@@ -18,10 +18,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     let storyboard = UIStoryboard(name: "Main", bundle: nil)
     let service = MoyaProvider<YelpService.BusinessProvider>()
     let jsonDecoder = JSONDecoder()
+    var navigationController: UINavigationController?
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
     
         window = UIWindow()
+        
+        loadDetails(with: "WavvLdfdP6g8aZTtbBQHTw")
         
         jsonDecoder.keyDecodingStrategy = .convertFromSnakeCase
         
@@ -51,12 +54,29 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             
         default:
             let nav = storyboard.instantiateViewController(identifier: "RestaurantNavigationController") as? UINavigationController
+            self.navigationController = nav
             window?.rootViewController = nav
             locationService.getLocation()
+            (nav?.topViewController as? RestaurantTableViewController)?.delegate = self
         }
         window?.makeKeyAndVisible()
         
         return true
+    }
+    
+    private func loadDetails(with id: String) {
+        service.request(.details(Id: "WavvLdfdP6g8aZTtbBQHTw")) { [weak self] result in
+            switch result {
+            case .success(let response):
+                if let details = try? self?.jsonDecoder.decode(Details.self, from: response.data) {
+                    let detailsViewModel = DetailsViewModel(details: details)
+                    (self?.navigationController?.topViewController as? DetailsFoodViewController)?.viewModel = detailsViewModel
+                }
+                
+            case .failure(let error):
+                print("Failed to get details \(error)")
+            }
+        }
     }
 
     private func loadBusiness(with coordinate: CLLocationCoordinate2D) {
@@ -66,7 +86,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             guard let self = self else { return }
                switch result {
                case .success(let response):
-                   
+                print(try? JSONSerialization.jsonObject(with: response.data, options: []))
                    let root = try? self.jsonDecoder.decode(Root.self, from: response.data)
                    let viewModels = root?.businesses
                     .compactMap(RestaurantListViewModel.init)
@@ -83,9 +103,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 }
 
-extension AppDelegate: LocationActions {
+extension AppDelegate: LocationActions, ListActions {
     
     func didTapAllow() {
         locationService.requestLocationAuthorization()
+    }
+    
+    func didTapCell(_ viewModel: RestaurantListViewModel) {
+        loadDetails(with: viewModel.id)
     }
 }

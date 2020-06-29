@@ -15,6 +15,7 @@
 		C236AD182492C91800C38180 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C236AD162492C91800C38180 /* LaunchScreen.storyboard */; };
 		C24E72692493BFC200B9F39F /* LocationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C24E72682493BFC200B9F39F /* LocationViewController.swift */; };
 		C24E726C2493D1C400B9F39F /* LocationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C24E726B2493D1C400B9F39F /* LocationService.swift */; };
+		C27CF65324A9F05300FFAF34 /* DetailsCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C27CF65224A9F05300FFAF34 /* DetailsCollectionViewCell.swift */; };
 		C2967FC02498DD6F0055DC05 /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2967FBF2498DD6F0055DC05 /* Models.swift */; };
 		C2B229FC2493ACA00084E816 /* BaseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2B229FB2493ACA00084E816 /* BaseView.swift */; };
 		C2B22A002493AF5C0084E816 /* DetailsFoodView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2B229FF2493AF5C0084E816 /* DetailsFoodView.swift */; };
@@ -36,6 +37,7 @@
 		C236AD192492C91800C38180 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C24E72682493BFC200B9F39F /* LocationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationViewController.swift; sourceTree = "<group>"; };
 		C24E726B2493D1C400B9F39F /* LocationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationService.swift; sourceTree = "<group>"; };
+		C27CF65224A9F05300FFAF34 /* DetailsCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailsCollectionViewCell.swift; sourceTree = "<group>"; };
 		C2967FBF2498DD6F0055DC05 /* Models.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Models.swift; sourceTree = "<group>"; };
 		C2B229FB2493ACA00084E816 /* BaseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseView.swift; sourceTree = "<group>"; };
 		C2B229FF2493AF5C0084E816 /* DetailsFoodView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailsFoodView.swift; sourceTree = "<group>"; };
@@ -153,6 +155,7 @@
 			isa = PBXGroup;
 			children = (
 				C2B22A072493B3AF0084E816 /* RestarantTableViewCell.swift */,
+				C27CF65224A9F05300FFAF34 /* DetailsCollectionViewCell.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -306,6 +309,7 @@
 				C2B22A052493B36A0084E816 /* RestaurantTableViewController.swift in Sources */,
 				C2B22A022493B2580084E816 /* DetailsFoodViewController.swift in Sources */,
 				C236AD102492C91600C38180 /* ViewController.swift in Sources */,
+				C27CF65324A9F05300FFAF34 /* DetailsCollectionViewCell.swift in Sources */,
 				C24E72692493BFC200B9F39F /* LocationViewController.swift in Sources */,
 				C2B22A082493B3AF0084E816 /* RestarantTableViewCell.swift in Sources */,
 				C236AD0C2492C91600C38180 /* AppDelegate.swift in Sources */,
