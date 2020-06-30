@@ -18,14 +18,5 @@ class RestarantTableViewCell: UITableViewCell {
     @IBOutlet weak var restaurantNameLabel: UILabel!
     @IBOutlet weak var locationLabel: UILabel!
     
-   
-
-    func configure(with viewModel: RestaurantListViewModel) {
-        
-        restaurantImageView.af.setImage(withURL: viewModel.imageUrl)
-        restaurantNameLabel.text = viewModel.name
-        locationLabel.text = viewModel.formattedDistance
-        
-    }
 
 }

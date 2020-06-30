@@ -23,9 +23,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
     
         window = UIWindow()
-        
-        loadDetails(with: "WavvLdfdP6g8aZTtbBQHTw")
-        
+                
         jsonDecoder.keyDecodingStrategy = .convertFromSnakeCase
         
         locationService.didChangeStatus = { [weak self] success in
@@ -64,14 +62,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         return true
     }
     
-    private func loadDetails(with id: String) {
-        service.request(.details(Id: "WavvLdfdP6g8aZTtbBQHTw")) { [weak self] result in
+    private func loadDetails(for viewController: UIViewController,with id: String) {
+        service.request(.details(Id: id)) { [weak self] result in
             switch result {
             case .success(let response):
                 if let details = try? self?.jsonDecoder.decode(Details.self, from: response.data) {
                     let detailsViewModel = DetailsViewModel(details: details)
                     (self?.navigationController?.topViewController as? DetailsFoodViewController)?.viewModel = detailsViewModel
-                }
+            }
                 
             case .failure(let error):
                 print("Failed to get details \(error)")
@@ -86,14 +84,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             guard let self = self else { return }
                switch result {
                case .success(let response):
-                print(try? JSONSerialization.jsonObject(with: response.data, options: []))
                    let root = try? self.jsonDecoder.decode(Root.self, from: response.data)
                    let viewModels = root?.businesses
                     .compactMap(RestaurantListViewModel.init)
                     .sorted(by: { $0.distance < $1.distance })
                 
                    if let nav = self.window?.rootViewController as? UINavigationController, let restaurantListViewController = nav.topViewController as? RestaurantTableViewController {
-                    restaurantListViewController.viewModels = viewModels ?? []
+                    restaurantListViewController.handle(viewModels ?? [])
+                   } else if let nav = self.storyboard.instantiateViewController(identifier: "RestaurantNavigationController") as? UINavigationController {
+                    self.navigationController = nav
+                    nav.modalPresentationStyle = .fullScreen
+                    self.window?.rootViewController?.present(nav, animated: true)
+                    (nav.topViewController as? RestaurantTableViewController)?.delegate = self
+                    (nav.topViewController as? RestaurantTableViewController)?.handle(viewModels ?? [])
                 }
                 
                case .failure(let error):
@@ -109,7 +112,7 @@ extension AppDelegate: LocationActions, ListActions {
         locationService.requestLocationAuthorization()
     }
     
-    func didTapCell(_ viewModel: RestaurantListViewModel) {
-        loadDetails(with: viewModel.id)
+    func didTapCell(_ viewController: UIViewController, viewModel: RestaurantListViewModel) {
+        loadDetails(for: viewController, with: viewModel.id)
     }
 }

@@ -10,7 +10,11 @@ import UIKit
 
 class DetailsCollectionViewCell: UICollectionViewCell {
     
-    let imageView = UIImageView()
+    let imageView: UIImageView = {
+        let iv = UIImageView()
+        iv.contentMode = .scaleAspectFill
+        return iv
+    }()
     
     override init(frame: CGRect) {
         super.init(frame: .zero)
@@ -18,26 +22,35 @@ class DetailsCollectionViewCell: UICollectionViewCell {
     }
     
     required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+        super.init(coder: coder)
+        setup()
     }
     
     private func setup() {
         contentView.addSubview(imageView)
-        imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.contentMode = .scaleAspectFill
         
-        imageView.pin()
-        
+    }
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        imageView.frame = bounds
     }
 }
 
-extension UIView {
-    func pin() {
-        NSLayoutConstraint.activate([
-            self.topAnchor.constraint(equalTo: topAnchor),
-            self.bottomAnchor.constraint(equalTo: bottomAnchor),
-            self.rightAnchor.constraint(equalTo: rightAnchor),
-            self.leftAnchor.constraint(equalTo: leftAnchor)
+extension NSLayoutConstraint {
+    static func activate(_ constraints: [NSLayoutConstraint]) {
+        constraints.forEach {
+            ($0.firstItem as? UIView)?.translatesAutoresizingMaskIntoConstraints = false
+            $0.isActive = true
+        }
+    }
+    
+    static func pin(view:  UIView, toEdgesOf anotherView: UIView) {
+        activate([
+            view.topAnchor.constraint(equalTo: anotherView.topAnchor),
+            view.leftAnchor.constraint(equalTo: anotherView.leftAnchor),
+            view.rightAnchor.constraint(equalTo: anotherView.rightAnchor),
+            view.bottomAnchor.constraint(equalTo: anotherView.bottomAnchor)
         ])
     }
 }

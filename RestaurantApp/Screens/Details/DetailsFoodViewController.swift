@@ -7,11 +7,15 @@
 //
 
 import UIKit
+import AlamofireImage
+import MapKit
+import CoreLocation
 
 class DetailsFoodViewController: UIViewController {
     
     @IBOutlet weak var detailsFoodView: DetailsFoodView?
-    let adapter = Adapter<DetailsViewModel, DetailsCollectionViewCell>()
+    let adapter = Adapter<URL, DetailsCollectionViewCell>()
+    var select: ((URL) -> Void)?
     var viewModel: DetailsViewModel? {
         didSet {
             updateView()
@@ -22,6 +26,16 @@ class DetailsFoodViewController: UIViewController {
         super.viewDidLoad()
         
         detailsFoodView?.collectionView?.register(cellType: DetailsCollectionViewCell.self)
+        detailsFoodView?.collectionView?.dataSource = adapter
+        detailsFoodView?.collectionView?.delegate = adapter
+        
+        adapter.configure = { (url, cell) in
+            cell.imageView.af.setImage(withURL: url)
+        }
+        
+        adapter.setPageControl = { [weak self] index in
+            self?.detailsFoodView?.pageControl?.currentPage = index
+        }
     }
     
     func updateView() {
@@ -30,8 +44,23 @@ class DetailsFoodViewController: UIViewController {
             detailsFoodView?.hoursLabel?.text = viewModel.isOpen
             detailsFoodView?.locationLabel?.text = viewModel.phoneNumber
             detailsFoodView?.ratingsLabel?.text = viewModel.rating
-
+            handle(imageUrls: viewModel.imageUrls)
+            centerMap(for: viewModel.coordinates)
+            title = viewModel.name
         }
+    }
+    
+    func handle(imageUrls: [URL]) {
+        adapter.items = imageUrls
+        detailsFoodView?.collectionView?.reloadData()
+    }
+    
+    func centerMap(for coordinate: CLLocationCoordinate2D) {
+        let region = MKCoordinateRegion(center: coordinate, latitudinalMeters: 100, longitudinalMeters: 100)
+        let annotation = MKPointAnnotation()
+        annotation.coordinate = coordinate
+        detailsFoodView?.mapView?.addAnnotation(annotation)
+        detailsFoodView?.mapView?.setRegion(region, animated: true)
     }
 }
 
@@ -59,7 +88,7 @@ class Adapter<T, Cell: UICollectionViewCell>: NSObject, UICollectionViewDataSour
     var items: [T] = []
     var configure: ((T, Cell) -> Void)?
     var select: ((T) -> Void)?
-    var cellHeight: CGFloat = 50.0
+    var setPageControl: ((Int) -> Void)?
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return items.count
@@ -67,10 +96,24 @@ class Adapter<T, Cell: UICollectionViewCell>: NSObject, UICollectionViewDataSour
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell: Cell = collectionView.dequeue(indexPath)
+        let item = items[indexPath.row]
+        configure?(item, cell)
         return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return .init(width: collectionView.width, height: cellHeight)
+        return .init(width: collectionView.bounds.width, height: collectionView.bounds.height)
     }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let item = items[indexPath.row]
+        select?(item)
+    }
+    
+    func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
+        let index = Int(targetContentOffset.pointee.x / scrollView.frame.width)
+        setPageControl?(index)
+    }
+    
+    
 }

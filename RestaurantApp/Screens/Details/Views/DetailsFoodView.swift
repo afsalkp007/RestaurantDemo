@@ -9,7 +9,7 @@
 import UIKit
 import MapKit
 
-@IBDesignable class DetailsFoodView: BaseView {
+@IBDesignable class DetailsFoodView: BaseView, UIScrollViewDelegate {
     
     
     @IBOutlet weak var collectionView: UICollectionView?
