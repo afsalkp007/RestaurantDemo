@@ -26,7 +26,7 @@ class RestaurantTableViewController: UITableViewController {
         
         tableAdapter.configure = { viewModel, cell in
             let url = URL(string: viewModel.imageUrl ?? "")!
-            cell.restaurantImageView.af.setImage(withURL: url)
+            cell.restaurantImageView.setImage(withURL: url)
             cell.restaurantNameLabel.text = viewModel.name
             cell.locationLabel.text = viewModel.formattedDistance
         }
@@ -37,7 +37,8 @@ class RestaurantTableViewController: UITableViewController {
         }
     }
     
-    func handle(_ viewModels: [RestaurantListViewModel]) {
+    func handle(_ viewModels: [RestaurantListViewModel]?) {
+        guard let viewModels = viewModels else { return }
         tableAdapter.items = viewModels
         tableView.reloadData()
     }

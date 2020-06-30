@@ -8,7 +8,6 @@
 //
 
 import UIKit
-import AlamofireImage
 
 class RestarantTableViewCell: UITableViewCell {
     

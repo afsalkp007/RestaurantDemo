@@ -4,8 +4,8 @@ target 'RestaurantApp' do
   use_frameworks!
 
   # Pods for RestaurantApp
-	pod 'AlamofireImage'
-	pod 'Moya'
-	pod 'Result'
+	#pod 'AlamofireImage'
+	#pod 'Moya'
+	#pod 'Result'
 	pod 'SwiftHash'
 end

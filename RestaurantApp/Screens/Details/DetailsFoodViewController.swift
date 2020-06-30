@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import AlamofireImage
 import MapKit
 import CoreLocation
 
@@ -30,7 +29,7 @@ class DetailsFoodViewController: UIViewController {
         detailsFoodView?.collectionView?.delegate = adapter
         
         adapter.configure = { (url, cell) in
-            cell.imageView.af.setImage(withURL: url)
+            cell.imageView.setImage(withURL: url)
         }
         
         adapter.setPageControl = { [weak self] index in

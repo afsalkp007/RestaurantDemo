@@ -123,8 +123,8 @@
 		C24E726A2493D1B300B9F39F /* Services */ = {
 			isa = PBXGroup;
 			children = (
-				C24E726B2493D1C400B9F39F /* LocationService.swift */,
 				C2DF0AB224962A630041E1CD /* YelpService.swift */,
+				C24E726B2493D1C400B9F39F /* LocationService.swift */,
 				C27F56D124AB31AD00608D1C /* CacheService.swift */,
 				C27F56D224AB31AD00608D1C /* ImageService.swift */,
 				C27F56D324AB31AD00608D1C /* NetworkService.swift */,

@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import Moya
 import CoreLocation
 
 @UIApplicationMain
@@ -16,7 +15,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
     let locationService = LocationService()
     let storyboard = UIStoryboard(name: "Main", bundle: nil)
-    //let service = MoyaProvider<YelpService.BusinessProvider>()
     private var yelpService: YelpService?
     let jsonDecoder = JSONDecoder()
     var navigationController: UINavigationController?
@@ -38,7 +36,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         locationService.newLocation = { [weak self] result in
             switch result {
             case .success(let location):
-                print(location)
                 self?.loadBusiness(with: location.coordinate)
             case .failure(let error):
                 assertionFailure("Error getting the user location \(error)")
@@ -47,7 +44,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         switch locationService.status {
         case .notDetermined, .denied, .restricted:
-            
             
             let locationVC = storyboard.instantiateViewController(withIdentifier: "LocationViewController") as? LocationViewController
             locationVC?.delegate = self
@@ -67,41 +63,41 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     private func loadDetails(for viewController: UIViewController,with id: String) {
-        yelpService?.fetchRestaurantDetails(id, completion: { [weak self] details in
+        yelpService?.fetchRestaurantDetails(id, completion: { [weak self] result in
             
-            guard let details = details else { return }
-            let detailsViewModel = DetailsViewModel(details: details)
-            (self?.navigationController?.topViewController as? DetailsFoodViewController)?.viewModel = detailsViewModel
+            switch result {
+            case .success(let details):
+                guard let details = details else { return }
+                let detailsViewModel = DetailsViewModel(details: details)
+                (self?.navigationController?.topViewController as? DetailsFoodViewController)?.viewModel = detailsViewModel
+            case .failure(let error):
+                print("Failed with error: \(error.localizedDescription)")
+            }
         })
-//        service.request(.details(Id: id)) { [weak self] result in
-//            switch result {
-//            case .success(let response):
-//                if let details = try? self?.jsonDecoder.decode(Details.self, from: response.data) {
-//                    let detailsViewModel = DetailsViewModel(details: details)
-//                    (self?.navigationController?.topViewController as? DetailsFoodViewController)?.viewModel = detailsViewModel
-//            }
-//
-//            case .failure(let error):
-//                print("Failed to get details \(error)")
-//            }
-//        }
     }
 
     private func loadBusiness(with coordinate: CLLocationCoordinate2D) {
         
-        yelpService?.fetchRestaurants(coordinate, completion: { businesses in
-            let viewModels = businesses
-                .compactMap(RestaurantListViewModel.init)
-                .sorted(by: { $0.distance < $1.distance })
+        yelpService?.fetchRestaurants(coordinate, completion: { result in
             
-            if let nav = self.window?.rootViewController as? UINavigationController, let restaurantListViewController = nav.topViewController as? RestaurantTableViewController {
-                restaurantListViewController.handle(viewModels )
-            } else if let nav = self.storyboard.instantiateViewController(identifier: "RestaurantNavigationController") as? UINavigationController {
-                self.navigationController = nav
-                nav.modalPresentationStyle = .fullScreen
-                self.window?.rootViewController?.present(nav, animated: true)
-                (nav.topViewController as? RestaurantTableViewController)?.delegate = self
-                (nav.topViewController as? RestaurantTableViewController)?.handle(viewModels )
+            switch result {
+            case .success(let businesses):
+                let viewModels = businesses?
+                    .compactMap(RestaurantListViewModel.init)
+                    .sorted(by: { $0.distance < $1.distance })
+                
+                if let nav = self.window?.rootViewController as? UINavigationController, let restaurantListViewController = nav.topViewController as? RestaurantTableViewController {
+                    restaurantListViewController.handle(viewModels)
+                } else if let nav = self.storyboard.instantiateViewController(identifier: "RestaurantNavigationController") as? UINavigationController {
+                    self.navigationController = nav
+                    nav.modalPresentationStyle = .fullScreen
+                    self.window?.rootViewController?.present(nav, animated: true)
+                    (nav.topViewController as? RestaurantTableViewController)?.delegate = self
+                    (nav.topViewController as? RestaurantTableViewController)?.handle(viewModels)
+                }
+                
+            case .failure(let error):
+                print("Failed with error: \(error.localizedDescription)")
             }
         })
     }

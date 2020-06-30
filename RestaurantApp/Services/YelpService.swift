@@ -7,7 +7,6 @@
 //
 
 import Foundation
-import Moya
 import CoreLocation
 final class YelpService {
     
@@ -22,7 +21,7 @@ final class YelpService {
     
     /// Fetch restaurant data
     /// - Parameter completion: Called when operation finishes
-    func fetchRestaurants(_ coordinate: CLLocationCoordinate2D, completion: @escaping ([Businesses]) -> Void) {
+    func fetchRestaurants(_ coordinate: CLLocationCoordinate2D, completion: @escaping (Result<[Businesses]?>) -> Void) {
         let resource = Resource(url: baseUrl, path: "/search", parameters:
             ["latitude": "42.361145",
              "longitude": "-71.057083"
@@ -32,21 +31,21 @@ final class YelpService {
         
         _ = networking.fetch(resource: resource, completion: { data in
             DispatchQueue.main.async {
-                completion(data.flatMap({ Restaurants.make(data: $0)?.businesses }) ?? [])
+                completion(.success(data.flatMap({ Restaurants.make(data: $0)?.businesses }) ?? []))
             }
         })
     }
     
     /// Fetch restuarant details
     /// - Parameter completion: Called when operation finishes
-    func fetchRestaurantDetails(_ id: String, completion: @escaping (Details?) -> Void) {
+    func fetchRestaurantDetails(_ id: String, completion: @escaping (Result<Details?>) -> Void) {
         let resource = Resource(url: baseUrl, path: "/\(id)", headers: [
             "Authorization": "Bearer \(apiKey)"
         ])
         
         _ = networking.fetch(resource: resource, completion: { data in
             DispatchQueue.main.async {
-                completion(data.flatMap{ Details.make(data: $0) })
+                completion(.success(data.flatMap{ Details.make(data: $0) }))
             }
         })
     }
