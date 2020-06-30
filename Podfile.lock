@@ -7,11 +7,13 @@ PODS:
   - Moya/Core (14.0.0):
     - Alamofire (~> 5.0)
   - Result (5.0.0)
+  - SwiftHash (2.0.2)
 
 DEPENDENCIES:
   - AlamofireImage
   - Moya
   - Result
+  - SwiftHash
 
 SPEC REPOS:
   trunk:
@@ -19,13 +21,15 @@ SPEC REPOS:
     - AlamofireImage
     - Moya
     - Result
+    - SwiftHash
 
 SPEC CHECKSUMS:
   Alamofire: e911732990610fe89af59ac0077f923d72dc3dfd
   AlamofireImage: c4a2ba349885fb3064feb74d2e547bd42ce9be10
   Moya: 5b45dacb75adb009f97fde91c204c1e565d31916
   Result: ed341d2f236af425b803e690e9bd8fd0a0cb7c5a
+  SwiftHash: 6d312abe61c8359bdef8d0093642f3a70b1c17ba
 
-PODFILE CHECKSUM: 15cf5c45b0779fd288de29115222cabcd77bd572
+PODFILE CHECKSUM: 8773eee927d7ce5912976f4a526d5302f5e4560b
 
 COCOAPODS: 1.9.3

@@ -1,55 +1,64 @@
 //
 //  NetworkService.swift
-//  RestaurantApp
+//  TestApp
 //
-//  Created by Afsal's Macbook Pro on 14/06/2020.
+//  Created by Afsal's Macbook Pro on 25/06/2020.
 //  Copyright © 2020 Afsal. All rights reserved.
 //
 
 import Foundation
-import Moya
 
-private let apiKey = "m6Gc89E8oCLAkXrIPGgRwFHrISsXgMY5pJxE7OBZ25vKoiITccB7YbKx6SskSdW5VstGoB3J8_q3jvDYpl67B1c1eNo4yDZnQP4FDInjDibo0CtPU2tnUOeKxS7mXnYx"
+/// Used to fetch data from network
+final class NetworkService: Networking {
+  private let session: URLSession
 
-enum YelpService {
-    
-    enum BusinessProvider: TargetType {
-        case search(lat: Double, long: Double)
-        case details(Id: String)
-        var baseURL: URL {
-            return URL(string: "https://api.yelp.com/v3/businesses")!
-        }
-        
-        var path: String {
-            switch self {
-            case .search:
-                return "/search"
-            case let .details(Id: Id):
-                return "/\(Id)"
-            }
-        }
-        
-        var method: Moya.Method {
-            return .get
-        }
-        
-        var sampleData: Data {
-            return Data()
-        }
-        
-        var task: Task {
-            switch self {
-            case let .search(lat, long):
-                return .requestParameters(parameters: ["latitude": lat, "longitude": long, "limit": 10], encoding: URLEncoding.queryString)
-            case .details:
-                return .requestPlain
-            }
-        }
-        
-        var headers: [String : String]? {
-            return ["Authorization": "Bearer \(apiKey)"]
-        }
+  init(configuration: URLSessionConfiguration = URLSessionConfiguration.default) {
+    self.session = URLSession(configuration: configuration)
+  }
+
+  @discardableResult func fetch(resource: Resource, completion: @escaping (Data?) -> Void) -> URLSessionTask? {
+    guard let request = makeRequest(resource: resource) else {
+        completion(nil)
+      return nil
     }
-    
-}
 
+    let task = session.dataTask(with: request, completionHandler: { data, _, error in
+      guard let data = data, error == nil else {
+        completion(nil)
+        return
+      }
+
+        completion(data)
+    })
+
+    task.resume()
+    return task
+  }
+
+  /// Convenient method to make request
+  ///
+  /// - Parameters:
+  ///   - resource: Network resource
+  /// - Returns: Constructed URL request
+  private func makeRequest(resource: Resource) -> URLRequest? {
+    let url = resource.path.map({ resource.url.appendingPathComponent($0) }) ?? resource.url
+    guard var component = URLComponents(url: url, resolvingAgainstBaseURL: true) else {
+      assertionFailure()
+      return nil
+    }
+
+    component.queryItems = resource.parameters.map({
+      return URLQueryItem(name: $0, value: $1)
+    })
+
+    guard let resolvedUrl = component.url else {
+      assertionFailure()
+      return nil
+    }
+
+    var request = URLRequest(url: resolvedUrl)
+    request.httpMethod = resource.httpMethod
+    request.allHTTPHeaderFields = resource.headers
+    return request
+  }
+}

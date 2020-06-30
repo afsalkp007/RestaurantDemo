@@ -7,4 +7,5 @@ target 'RestaurantApp' do
 	pod 'AlamofireImage'
 	pod 'Moya'
 	pod 'Result'
+	pod 'SwiftHash'
 end

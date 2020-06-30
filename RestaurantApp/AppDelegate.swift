@@ -16,13 +16,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
     let locationService = LocationService()
     let storyboard = UIStoryboard(name: "Main", bundle: nil)
-    let service = MoyaProvider<YelpService.BusinessProvider>()
+    //let service = MoyaProvider<YelpService.BusinessProvider>()
+    private var yelpService: YelpService?
     let jsonDecoder = JSONDecoder()
     var navigationController: UINavigationController?
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
     
         window = UIWindow()
+        
+        yelpService = YelpService(networking: NetworkService())
                 
         jsonDecoder.keyDecodingStrategy = .convertFromSnakeCase
         
@@ -35,6 +38,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         locationService.newLocation = { [weak self] result in
             switch result {
             case .success(let location):
+                print(location)
                 self?.loadBusiness(with: location.coordinate)
             case .failure(let error):
                 assertionFailure("Error getting the user location \(error)")
@@ -63,46 +67,43 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     private func loadDetails(for viewController: UIViewController,with id: String) {
-        service.request(.details(Id: id)) { [weak self] result in
-            switch result {
-            case .success(let response):
-                if let details = try? self?.jsonDecoder.decode(Details.self, from: response.data) {
-                    let detailsViewModel = DetailsViewModel(details: details)
-                    (self?.navigationController?.topViewController as? DetailsFoodViewController)?.viewModel = detailsViewModel
-            }
-                
-            case .failure(let error):
-                print("Failed to get details \(error)")
-            }
-        }
+        yelpService?.fetchRestaurantDetails(id, completion: { [weak self] details in
+            
+            guard let details = details else { return }
+            let detailsViewModel = DetailsViewModel(details: details)
+            (self?.navigationController?.topViewController as? DetailsFoodViewController)?.viewModel = detailsViewModel
+        })
+//        service.request(.details(Id: id)) { [weak self] result in
+//            switch result {
+//            case .success(let response):
+//                if let details = try? self?.jsonDecoder.decode(Details.self, from: response.data) {
+//                    let detailsViewModel = DetailsViewModel(details: details)
+//                    (self?.navigationController?.topViewController as? DetailsFoodViewController)?.viewModel = detailsViewModel
+//            }
+//
+//            case .failure(let error):
+//                print("Failed to get details \(error)")
+//            }
+//        }
     }
 
     private func loadBusiness(with coordinate: CLLocationCoordinate2D) {
-        service.request(.search(lat: 42.361145, long: -71.057083 )) { [weak self] (result) in
-        //service.request(.search(lat: coordinate.latitude, long: coordinate.longitude )) { [weak self] (result) in
+        
+        yelpService?.fetchRestaurants(coordinate, completion: { businesses in
+            let viewModels = businesses
+                .compactMap(RestaurantListViewModel.init)
+                .sorted(by: { $0.distance < $1.distance })
             
-            guard let self = self else { return }
-               switch result {
-               case .success(let response):
-                   let root = try? self.jsonDecoder.decode(Root.self, from: response.data)
-                   let viewModels = root?.businesses
-                    .compactMap(RestaurantListViewModel.init)
-                    .sorted(by: { $0.distance < $1.distance })
-                
-                   if let nav = self.window?.rootViewController as? UINavigationController, let restaurantListViewController = nav.topViewController as? RestaurantTableViewController {
-                    restaurantListViewController.handle(viewModels ?? [])
-                   } else if let nav = self.storyboard.instantiateViewController(identifier: "RestaurantNavigationController") as? UINavigationController {
-                    self.navigationController = nav
-                    nav.modalPresentationStyle = .fullScreen
-                    self.window?.rootViewController?.present(nav, animated: true)
-                    (nav.topViewController as? RestaurantTableViewController)?.delegate = self
-                    (nav.topViewController as? RestaurantTableViewController)?.handle(viewModels ?? [])
-                }
-                
-               case .failure(let error):
-                   print("Error: \(error)")
-               }
-           }
+            if let nav = self.window?.rootViewController as? UINavigationController, let restaurantListViewController = nav.topViewController as? RestaurantTableViewController {
+                restaurantListViewController.handle(viewModels )
+            } else if let nav = self.storyboard.instantiateViewController(identifier: "RestaurantNavigationController") as? UINavigationController {
+                self.navigationController = nav
+                nav.modalPresentationStyle = .fullScreen
+                self.window?.rootViewController?.present(nav, animated: true)
+                (nav.topViewController as? RestaurantTableViewController)?.delegate = self
+                (nav.topViewController as? RestaurantTableViewController)?.handle(viewModels )
+            }
+        })
     }
 }
 

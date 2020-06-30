@@ -55,7 +55,8 @@ class DetailsFoodViewController: UIViewController {
         detailsFoodView?.collectionView?.reloadData()
     }
     
-    func centerMap(for coordinate: CLLocationCoordinate2D) {
+    func centerMap(for coordinate: CLLocationCoordinate2D?) {
+        guard let coordinate = coordinate else { return }
         let region = MKCoordinateRegion(center: coordinate, latitudinalMeters: 100, longitudinalMeters: 100)
         let annotation = MKPointAnnotation()
         annotation.coordinate = coordinate
