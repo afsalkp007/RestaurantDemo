@@ -25,7 +25,7 @@ class RestaurantTableViewController: UITableViewController {
         tableView.dataSource = tableAdapter
         
         tableAdapter.configure = { viewModel, cell in
-            let url = URL(string: viewModel.imageUrl ?? "")!
+            let url = URL(string: viewModel.imageUrl)!
             cell.restaurantImageView.setImage(withURL: url)
             cell.restaurantNameLabel.text = viewModel.name
             cell.locationLabel.text = viewModel.formattedDistance
